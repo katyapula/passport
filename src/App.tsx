@@ -1,25 +1,50 @@
-import { useState } from 'react'
-import './App.css'
+import "./App.css";
+import PassportList from "./components/PassportList.tsx";
+import { useGetMockedByNameQuery } from "./app/data.ts";
+import store from "./app/store.ts";
+import { Provider } from "@/components/ui/provider";
+import Chakra from "./components/Chakra.tsx";
+import {
+  ChakraProvider,
+  createSystem,
+  defaultConfig,
+  defaultSystem,
+  defineConfig,
+} from "@chakra-ui/react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const { data, error, isLoading } = useGetMockedByNameQuery('passport');
+  //
+  // if (isLoading) return 'Loading...'
+  //
+  // if (error) return 'An error has occurred: '
+
+  const data = store.getState();
+
+  const config = createSystem(defaultConfig, {
+    theme: {
+      semanticTokens: {
+        colors: {
+          danger: { value: "{colors.red}" },
+        },
+        shadows: {
+          sm: { value: "2px 2px 0 rgba(0, 0, 0, 0.14)" },
+        },
+      },
+      tokens: {
+        colors: {},
+        radii: {
+          sm: { value: "2px" },
+        },
+      },
+    },
+  });
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ChakraProvider value={config}>
+      <Chakra />
+    </ChakraProvider>
+  );
 }
 
-export default App
+export default App;
