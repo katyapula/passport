@@ -11,6 +11,7 @@ import {
   defaultSystem,
   defineConfig,
 } from "@chakra-ui/react";
+import Dictionary from "./components/Dictionary.tsx";
 
 function App() {
   // const { data, error, isLoading } = useGetMockedByNameQuery('passport');
@@ -42,7 +43,7 @@ function App() {
 
   return (
     <ChakraProvider value={config}>
-      <Chakra />
+      <Dictionary />
     </ChakraProvider>
   );
 }
