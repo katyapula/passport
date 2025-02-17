@@ -3,13 +3,11 @@ import { HStack, Stack, Input, VStack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
 
-type ChakraProps = {};
-
-export default function Chakra({}: ChakraProps) {
+export default function Chakra() {
   return (
-    <VStack spacing={2}>
+    <VStack gap={2}>
       <HStack colorPalette="blue">
-        <Button variant="subtle" raddii="sm">
+        <Button variant="subtle">
           Click me
         </Button>
         <Button variant="surface">Click me</Button>

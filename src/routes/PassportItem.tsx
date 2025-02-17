@@ -1,4 +1,4 @@
-import { PersonState } from "../app/slices/passportSlice.ts";
+import { PersonState } from "@/app/slices/passportSlice";
 
 type PassportItemProps = {
   person: PersonState;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { database } from "../../fbconfig.js";
-import { onValue, ref, set } from "firebase/database";
+import { database } from "../../fbconfig";
+import { onValue, ref, remove, update } from "firebase/database";
 import { Box, Input, Table } from "@chakra-ui/react";
-import { Button } from "./ui/button.tsx";
-import { Field } from "./ui/field.tsx";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
 
 export default function Dictionary() {
   const [translations, setTranslations] = useState({});
@@ -13,18 +13,44 @@ export default function Dictionary() {
   useEffect(() => {
     const dbRef = ref(database, "french");
 
-    return onValue(dbRef, (snapshot) => {
-      setTranslations(snapshot.toJSON());
-    });
+    console.log("Setting up Firebase listener...");
+
+    const unsubscribe = onValue(
+      dbRef,
+      (snapshot) => {
+        console.log("onValue triggered! Snapshot exists:", snapshot.exists());
+        console.log("Snapshot Data:", snapshot.val());
+
+        const data = snapshot.val();
+        setTranslations(data || {}); // ✅ Always set a valid object
+      },
+      (error) => {
+        console.error("Firebase read error:", error);
+      }
+    );
+
+    return () => {
+      console.log("Unsubscribing from Firebase...");
+      unsubscribe();
+    };
   }, []);
 
+
   const onAddTranslation = () => {
-    set(ref(database, "french/" + key), value);
+    if (!key || !value) return;
+
+    update(ref(database, "french/"), {
+      [key]: value,
+    });
+
+    setKey("");
+    setValue("");
   };
 
-  const onDeleteTranslation = (key) => {
-    set(ref(database, "french/" + key), null);
+  const onDeleteTranslation = (key: string) => {
+    remove(ref(database, `french/${key}`));
   };
+
 
   return (
     <>
@@ -32,7 +58,7 @@ export default function Dictionary() {
       <Box>
         <Table.Root color="black">
           <Table.Body>
-            {Object.entries(translations).map(([key, value]) => {
+            {translations && Object.entries(translations).map(([key, value]) => {
               return (
                 <Table.Row key={key}>
                   <Table.Cell>{key}</Table.Cell>

@@ -1,50 +1,21 @@
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import PassportList from "./components/PassportList.tsx";
-import { useGetMockedByNameQuery } from "./app/data.ts";
-import store from "./app/store.ts";
-import { Provider } from "@/components/ui/provider";
-import Chakra from "./components/Chakra.tsx";
-import {
-  ChakraProvider,
-  createSystem,
-  defaultConfig,
-  defaultSystem,
-  defineConfig,
-} from "@chakra-ui/react";
-import Dictionary from "./components/Dictionary.tsx";
+import { router } from "@/app/routes";
 
 function App() {
-  // const { data, error, isLoading } = useGetMockedByNameQuery('passport');
-  //
-  // if (isLoading) return 'Loading...'
-  //
-  // if (error) return 'An error has occurred: '
 
-  const data = store.getState();
-
-  const config = createSystem(defaultConfig, {
-    theme: {
-      semanticTokens: {
-        colors: {
-          danger: { value: "{colors.red}" },
-        },
-        shadows: {
-          sm: { value: "2px 2px 0 rgba(0, 0, 0, 0.14)" },
-        },
-      },
-      tokens: {
-        colors: {},
-        radii: {
-          sm: { value: "2px" },
-        },
-      },
-    },
-  });
+  // TODO:
+  //  1. Add BrowserRouter from react-router
+  //  2. Add 2 types of routes: PublicRoute and PrivateRoute
+  //  3. Create dummy auth: login hardcoded user, store token in localStorage
+  //  3.1 Check if user creads are correct const validUser = { email: "sasa@gmail.com", password: "1234" }
+  //  token = base64(email+password)
+  //  3.2 If not show validation errors
+  //  4. In case user entered correct creds, generate authToken and store ti in localStorage\
+  //  5. Use authToken to determine whether user is logged in or not
 
   return (
-    <ChakraProvider value={config}>
-      <Dictionary />
-    </ChakraProvider>
+    <RouterProvider router={router} />
   );
 }
 

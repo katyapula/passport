@@ -2,8 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
-import { getDatabase, ref } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
 

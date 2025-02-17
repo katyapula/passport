@@ -1,18 +1,19 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
-import travelTypeReducer from './slices/globalSlice.ts';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import travelTypeReducer from "./slices/globalSlice.ts";
+import { personsApi } from "@/app/data";
 
 const rootReducer = combineReducers({
   travelType: travelTypeReducer,
-})
-
-const store =  configureStore({
-  reducer: rootReducer,
-  // middleware: (getDefaultMiddleware) => {}
+  [personsApi.reducerPath]: personsApi.reducer,
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(personsApi.middleware),
+});
+
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
