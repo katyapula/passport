@@ -8,17 +8,12 @@ export default function Layout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/login");
   };
 
   return (
     <Container w="full" fluid>
-      {isAuthenticated() && (
-        <Box as="header" p={4} bg="surface">
-          <Button onClick={handleLogout}>Logout</Button>
-        </Box>
-      )}
       <Grid gap={8} templateColumns="1fr 3fr" w="full">
         <Box as="ul">
           {isAuthenticated() && (
@@ -26,12 +21,15 @@ export default function Layout() {
               {routes.map((route, i) => (
                 <Box as="li" key={i} textTransform="capitalize">
                   <NavLink to={route.path}>
-                    <Button variant="surface" w="full" as="span">
+                    <Button variant="surface" w="full" as="span" borderRadius={0}>
                       {route.path.slice(1)}
                     </Button>
                   </NavLink>
                 </Box>
               ))}
+              <Box p={4}>
+                <Button onClick={handleLogout}>Logout</Button>
+              </Box>
             </>
           )}
         </Box>
